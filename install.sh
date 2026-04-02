@@ -37,35 +37,24 @@ fi
 
 read -r -d '' HANDLER_ZSH <<EOF || true
 
-command_not_found_handler() {
-  ($PLAYER "$SOUND_FILE" >/dev/null 2>&1) &
-  echo "zsh: command not found: \$1" >&2
-  return 127
-}
-cd() {
-  builtin cd "\$@" 2>/dev/null || {
-    ($PLAYER "$SOUND_FILE" >/dev/null 2>&1 &!)
-    echo "cd: no such file or directory: \$1" >&2
-    return 1
-  }
+_play_error_sound() {
+  local exit_code=$?
+  if [[ $exit_code -ne 0 ]]; then
+    #afplay /System/Library/Sounds/Basso.aiff &
+    # Linux (uncomment one of these instead):
+    ($PLAYER "$SOUND_FILE" &>/dev/null &)
+  fi
 }
 EOF
 
 read -r -d '' HANDLER_BASH <<EOF || true
+_play_error_sound() {
+  local exit_code=$?
+  if [[ $exit_code -ne 0 ]]; then
+    ($PLAYER "$SOUND_FILE" &>/dev/null &)
+  fi
+}
 
-command_not_found_handle() {
-  ($PLAYER "$SOUND_FILE" >/dev/null 2>&1) &
-  echo "bash: command not found: \$1" >&2
-  return 127
-}
-export -f command_not_found_handle
-cd() {
-  builtin cd "\$@" 2>/dev/null || {
-    ($PLAYER "$SOUND_FILE" >/dev/null 2>&1 & disown)
-    echo "cd: no such file or directory: \$1" >&2
-    return 1
-  }
-}
 EOF
 
 inject_rc() {
