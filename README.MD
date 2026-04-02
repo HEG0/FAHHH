@@ -1,4 +1,4 @@
-ls -l ~/.zshrc
+ls -l ~/.zshrc or ls -l ~/.bashrc
 
 if no zshrc file or rw privlages only for root, install oh my zsh(sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)") and then:
 
