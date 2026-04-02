@@ -38,10 +38,8 @@ fi
 read -r -d '' HANDLER_ZSH <<EOF || true
 
 _play_error_sound() {
-  local exit_code=$?
-  if [[ $exit_code -ne 0 ]]; then
-    #afplay /System/Library/Sounds/Basso.aiff &
-    # Linux (uncomment one of these instead):
+  local exit_code=\$?
+  if [[ \$exit_code -ne 0 ]]; then
     ($PLAYER "$SOUND_FILE" &>/dev/null &)
   fi
 }
