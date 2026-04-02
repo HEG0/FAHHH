@@ -57,17 +57,17 @@ PROMPT_COMMAND="_play_error_sound\${PROMPT_COMMAND:+;\$PROMPT_COMMAND}"
 EOF
 
 inject_rc() {
-	local rc_file="$1"
-	local snippet="$2"
+    local rc_file="$1"
+    local snippet="$2"
 
-	if grep -q "command_not_found_hand" "$rc_file" 2>/dev/null; then
-		echo "fahhh is already installed in $rc_file — skipping."
-		return
-	fi
+    if grep -q "_play_error_sound" "$rc_file" 2>/dev/null; then
+        echo "fahhh is already installed in $rc_file — skipping."
+        return
+    fi
 
-	echo "$snippet" >>"$rc_file"
-	echo "fahhh installed into $rc_file"
-	echo "restart your terminal or run: source $rc_file"
+    printf '%s\n' "$snippet" >> "$rc_file"
+    echo "fahhh installed into $rc_file"
+    echo "restart your terminal or run: source $rc_file"
 }
 
 
