@@ -45,6 +45,7 @@ _play_error_sound() {
     ($PLAYER "$SOUND_FILE" &>/dev/null &)
   fi
 }
+precmd_functions+=(_play_error_sound)
 EOF
 
 read -r -d '' HANDLER_BASH <<EOF || true
@@ -54,7 +55,7 @@ _play_error_sound() {
     ($PLAYER "$SOUND_FILE" &>/dev/null &)
   fi
 }
-
+precmd_functions+=(_play_error_sound)
 EOF
 
 inject_rc() {
@@ -71,31 +72,8 @@ inject_rc() {
 	echo "restart your terminal or run: source $rc_file"
 }
 
-inject_fish() {
-	if ! command -v fish &>/dev/null; then
-		return
-	fi
-
-	mkdir -p "$(dirname "$FISH_FUNC")"
-
-	if [[ -f "$FISH_FUNC" ]] && grep -q "fish_command_not_found" "$FISH_FUNC" 2>/dev/null; then
-		echo "fahhh is already installed in $FISH_FUNC — skipping."
-		return
-	fi
-
-	cat >"$FISH_FUNC" <<EOF
-function fish_command_not_found
-  $PLAYER "$SOUND_FILE" >/dev/null 2>&1 &
-  echo "fish: unknown command: \$argv[1]" >&2
-end
-EOF
-
-	echo "fahhh installed into $FISH_FUNC"
-	echo "restart your terminal or run: source $FISH_FUNC"
-}
 
 [[ -f "$HOME/.zshrc" ]] && inject_rc "$HOME/.zshrc" "$HANDLER_ZSH"
 [[ -f "$HOME/.bashrc" ]] && inject_rc "$HOME/.bashrc" "$HANDLER_BASH"
-inject_fish
 
 exit 0
