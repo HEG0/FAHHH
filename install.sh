@@ -48,12 +48,12 @@ EOF
 
 read -r -d '' HANDLER_BASH <<EOF || true
 _play_error_sound() {
-  local exit_code=$?
-  if [[ $exit_code -ne 0 ]]; then
+  local exit_code=\$?
+  if [[ \$exit_code -ne 0 ]]; then
     ($PLAYER "$SOUND_FILE" &>/dev/null &)
   fi
 }
-precmd_functions+=(_play_error_sound)
+PROMPT_COMMAND="_play_error_sound\${PROMPT_COMMAND:+;\$PROMPT_COMMAND}"
 EOF
 
 inject_rc() {
