@@ -1,4 +1,4 @@
-REPO="https://raw.githubusercontent.com/HEG0/FAHHH/master"
+REPO="https://raw.githubusercontent.com/HEG0/FAHHH/main"
 INSTALL_DIR="$HOME/.local/share/fahhh"
 MP3_FILE="$INSTALL_DIR/fahhh.mp3"
 WAV_FILE="$INSTALL_DIR/fahhh.wav"
